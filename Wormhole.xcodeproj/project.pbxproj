@@ -12,14 +12,15 @@
 		076FB63020D970CA0024DF82 /* AppStoreConnectError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 076FB62920D970CA0024DF82 /* AppStoreConnectError.swift */; };
 		076FB63120D970CA0024DF82 /* JWTEncoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 076FB62A20D970CA0024DF82 /* JWTEncoder.swift */; };
 		076FB63220D970CA0024DF82 /* Client.swift in Sources */ = {isa = PBXBuildFile; fileRef = 076FB62B20D970CA0024DF82 /* Client.swift */; };
-		076FB63420D970CA0024DF82 /* Wormhole.swift in Sources */ = {isa = PBXBuildFile; fileRef = 076FB62D20D970CA0024DF82 /* Wormhole.swift */; };
 		076FB63820D970E20024DF82 /* JWTEncoderTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 076FB63620D970E20024DF82 /* JWTEncoderTests.swift */; };
-		076FB63920D970E20024DF82 /* XCTestManifests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 076FB63720D970E20024DF82 /* XCTestManifests.swift */; };
 		076FB63D20D973E40024DF82 /* Result.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 076FB63C20D973E40024DF82 /* Result.framework */; };
 		076FB64020D974D80024DF82 /* EntityType.swift in Sources */ = {isa = PBXBuildFile; fileRef = 076FB63E20D974D50024DF82 /* EntityType.swift */; };
 		076FB64420D9787D0024DF82 /* user.json in Resources */ = {isa = PBXBuildFile; fileRef = 076FB64220D9787D0024DF82 /* user.json */; };
 		076FB64520D9787D0024DF82 /* users.json in Resources */ = {isa = PBXBuildFile; fileRef = 076FB64320D9787D0024DF82 /* users.json */; };
 		076FB64720D978A70024DF82 /* EntityTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 076FB64620D978A70024DF82 /* EntityTests.swift */; };
+		076FB64920D9802F0024DF82 /* AppStoreConnectErrorTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 076FB64820D9802F0024DF82 /* AppStoreConnectErrorTests.swift */; };
+		076FB64B20D980570024DF82 /* Utility.swift in Sources */ = {isa = PBXBuildFile; fileRef = 076FB64A20D980570024DF82 /* Utility.swift */; };
+		076FB64D20D980F90024DF82 /* errors.json in Resources */ = {isa = PBXBuildFile; fileRef = 076FB64C20D980F90024DF82 /* errors.json */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -41,14 +42,15 @@
 		076FB62A20D970CA0024DF82 /* JWTEncoder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JWTEncoder.swift; sourceTree = "<group>"; };
 		076FB62B20D970CA0024DF82 /* Client.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Client.swift; sourceTree = "<group>"; };
 		076FB62C20D970CA0024DF82 /* Wormhole-Bridging-Header.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "Wormhole-Bridging-Header.h"; sourceTree = "<group>"; };
-		076FB62D20D970CA0024DF82 /* Wormhole.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Wormhole.swift; sourceTree = "<group>"; };
 		076FB63620D970E20024DF82 /* JWTEncoderTests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JWTEncoderTests.swift; sourceTree = "<group>"; };
-		076FB63720D970E20024DF82 /* XCTestManifests.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = XCTestManifests.swift; sourceTree = "<group>"; };
 		076FB63C20D973E40024DF82 /* Result.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Result.framework; path = Carthage/Build/Mac/Result.framework; sourceTree = "<group>"; };
 		076FB63E20D974D50024DF82 /* EntityType.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntityType.swift; sourceTree = "<group>"; };
 		076FB64220D9787D0024DF82 /* user.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = user.json; sourceTree = "<group>"; };
 		076FB64320D9787D0024DF82 /* users.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = users.json; sourceTree = "<group>"; };
 		076FB64620D978A70024DF82 /* EntityTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EntityTests.swift; sourceTree = "<group>"; };
+		076FB64820D9802F0024DF82 /* AppStoreConnectErrorTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppStoreConnectErrorTests.swift; sourceTree = "<group>"; };
+		076FB64A20D980570024DF82 /* Utility.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Utility.swift; sourceTree = "<group>"; };
+		076FB64C20D980F90024DF82 /* errors.json */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.json; path = errors.json; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -99,7 +101,6 @@
 				076FB62A20D970CA0024DF82 /* JWTEncoder.swift */,
 				076FB62B20D970CA0024DF82 /* Client.swift */,
 				076FB62C20D970CA0024DF82 /* Wormhole-Bridging-Header.h */,
-				076FB62D20D970CA0024DF82 /* Wormhole.swift */,
 				076FB63E20D974D50024DF82 /* EntityType.swift */,
 			);
 			name = Wormhole;
@@ -111,8 +112,9 @@
 			children = (
 				076FB64120D977D70024DF82 /* Fixtures */,
 				076FB63620D970E20024DF82 /* JWTEncoderTests.swift */,
-				076FB63720D970E20024DF82 /* XCTestManifests.swift */,
 				076FB64620D978A70024DF82 /* EntityTests.swift */,
+				076FB64820D9802F0024DF82 /* AppStoreConnectErrorTests.swift */,
+				076FB64A20D980570024DF82 /* Utility.swift */,
 			);
 			name = WormholeTests;
 			path = Tests/WormholeTests;
@@ -129,6 +131,7 @@
 		076FB64120D977D70024DF82 /* Fixtures */ = {
 			isa = PBXGroup;
 			children = (
+				076FB64C20D980F90024DF82 /* errors.json */,
 				076FB64220D9787D0024DF82 /* user.json */,
 				076FB64320D9787D0024DF82 /* users.json */,
 			);
@@ -234,6 +237,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				076FB64520D9787D0024DF82 /* users.json in Resources */,
+				076FB64D20D980F90024DF82 /* errors.json in Resources */,
 				076FB64420D9787D0024DF82 /* user.json in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -270,7 +274,6 @@
 			files = (
 				076FB64020D974D80024DF82 /* EntityType.swift in Sources */,
 				076FB63120D970CA0024DF82 /* JWTEncoder.swift in Sources */,
-				076FB63420D970CA0024DF82 /* Wormhole.swift in Sources */,
 				076FB63020D970CA0024DF82 /* AppStoreConnectError.swift in Sources */,
 				076FB63220D970CA0024DF82 /* Client.swift in Sources */,
 				076FB62E20D970CA0024DF82 /* JWTEncoderImpl.mm in Sources */,
@@ -281,9 +284,10 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				076FB64B20D980570024DF82 /* Utility.swift in Sources */,
 				076FB63820D970E20024DF82 /* JWTEncoderTests.swift in Sources */,
 				076FB64720D978A70024DF82 /* EntityTests.swift in Sources */,
-				076FB63920D970E20024DF82 /* XCTestManifests.swift in Sources */,
+				076FB64920D9802F0024DF82 /* AppStoreConnectErrorTests.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

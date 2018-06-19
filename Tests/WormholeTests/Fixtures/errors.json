@@ -1,0 +1,14 @@
+{
+  "errors": [
+    {
+      "status": "400",
+      "id": "b91d85c7-b7db-4451-8f3f-9a3c8af9a392",
+      "title": "A parameter has an invalid value",
+      "detail": "'emaill' is not a valid filter type",
+      "code": "PARAMETER_ERROR.INVALID",
+      "source": {
+        "parameter": "filter[emaill]"
+      }
+    }
+  ]
+}

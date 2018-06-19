@@ -8,7 +8,7 @@ public class Client {
         case v1
     }
     
-    public enum Method: String {
+    private enum Method: String {
         case get
         case post
         case patch
@@ -17,7 +17,7 @@ public class Client {
     
     public enum ClientError: Swift.Error {
         case decodeError(Error?)
-        case apiError(AppStoreConnectError)
+        case apiError([AppStoreConnectError])
         case unknown
     }
     
@@ -62,8 +62,8 @@ public class Client {
                         let response = try self.decoder.decode(Entity.self, from: data)
                         result = .init(value: response)
                     } else {
-                        let errorObject = try self.decoder.decode(AppStoreConnectError.self, from: data)
-                        result = .init(error: .apiError(errorObject))
+                        let errorContainer = try self.decoder.decode(ErrorsContainer.self, from: data)
+                        result = .init(error: .apiError(errorContainer.errors))
                     }
                 } catch {
                     result = .init(error: .decodeError(error))
