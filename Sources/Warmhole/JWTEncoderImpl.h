@@ -6,7 +6,7 @@ NS_ASSUME_NONNULL_BEGIN
 
 - (NSString *)encodeWithPrivateKey:(NSString *)privateKey
                           issuerID:(NSInteger)issuerID
-                             keyID:(NSUUID *)keyID;
+                             keyID:(NSUUID *)keyID NS_SWIFT_NAME(encode(with:issuerID:keyID:));
 
 @end
 
