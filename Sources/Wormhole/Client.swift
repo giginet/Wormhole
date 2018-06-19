@@ -1,6 +1,9 @@
 import Foundation
+import Result
 
 public class Client {
+    public typealias Completion<Entity: EntityType> = (Result<Entity, AppStoreConnectError>) -> Void
+    
     public enum APIVersion: String {
         case v1
     }
@@ -34,8 +37,9 @@ public class Client {
         token = try encoder.encode(issuerID: issuerID, keyID: keyID)
     }
     
-    public func get(to path: String,
-                    queryItems: [URLQueryItem] = []) {
+    public func get<Entity: EntityType>(to path: String,
+                                        queryItems: [URLQueryItem] = [],
+                                        completion: @escaping Completion<Entity>) {
         var components = URLComponents()
         components.path = path
         components.queryItems = queryItems
@@ -44,6 +48,11 @@ public class Client {
         }
         let request = urlRequest(of: .get, to: url)
         URLSession.shared.dataTask(with: request) { data, response, error in
+            if let data = data {
+                if error != nil {
+                } else {
+                }
+            }
         }.resume()
     }
 }

@@ -1,8 +1,8 @@
 import XCTest
 @testable import Wormhole
 
-final class WormholeTests: XCTestCase {
-    func testExample() {
+final class JWTEncoderTests: XCTestCase {
+    func testEncode() {
         let privateKey = """
 -----BEGIN PRIVATE KEY-----
 MIGHAgEAMBMGByqGSM49AgEGCCqGSM49AwEHBG0wawIBAQQgevZzL1gdAFr88hb2
@@ -19,9 +19,4 @@ OF/2NxApJCzGCEDdfSp6VQO30hyhRANCAAQRWz+jn65BtOMvdyHKcvjBeBSDZH2r
         let header = components[0]
         XCTAssertEqual(header, "eyJhbGciOiJFUzI1NiIsImtpZCI6ImI1OGE3OWQwLTE0ZDktNGMzYy1hNmUxLTg0NmRmMWFhZmRlYiIsInR5cCI6IkpXVCJ9")
     }
-    
-    
-    static var allTests = [
-        ("testExample", testExample),
-        ]
 }
