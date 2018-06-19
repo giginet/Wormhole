@@ -74,4 +74,26 @@ public class Client {
             completion(result)
             }.resume()
     }
+    
+    public func delete(to path: String,
+                       completion: @escaping (Result<Void, ClientError>) -> Void) {
+        let url = baseURL.appendingPathComponent(path)
+        let request = urlRequest(of: .delete, to: url)
+        URLSession.shared.dataTask(with: request) { data, response, error in
+            let result: Result<Void, ClientError>
+            if let httpURLResponse = response as? HTTPURLResponse, httpURLResponse.statusCode == 204 {
+                result = .init(value: ())
+            } else if let data = data {
+                do {
+                    let errorContainer = try self.decoder.decode(ErrorsContainer.self, from: data)
+                    result = .init(error: .apiError(errorContainer.errors))
+                } catch {
+                    result = .init(error: .decodeError(error))
+                }
+            } else {
+                result = .init(error: .unknown)
+            }
+            completion(result)
+        }.resume()
+    }
 }
