@@ -1,3 +1,4 @@
-HEADER_SEARCH_PATHS = /usr/local/include
-LIBRARY_SEARCH_PATHS = /usr/local/lib
-OTHER_LDFLAGS = -ljwt
+HEADER_SEARCH_PATHS = /usr/local/opt/openssl/include Sources/cpp-jwt/include
+LIBRARY_SEARCH_PATHS = /usr/local/opt/openssl/lib
+OTHER_LDFLAGS = -lssl -lcrypto
+SWIFT_OBJC_BRIDGING_HEADER = ./Sources/Warmhole/Warmhole-Bridging-Header.h

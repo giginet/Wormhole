@@ -1,0 +1,3 @@
+[submodule "Sources/cpp-jwt"]
+	path = Sources/cpp-jwt
+	url = https://github.com/arun11299/cpp-jwt.git
