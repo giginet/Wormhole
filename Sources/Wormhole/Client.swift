@@ -2,7 +2,7 @@ import Foundation
 import Result
 
 public class Client {
-    public typealias Completion<Entity: EntityType> = (Result<Entity, AppStoreConnectError>) -> Void
+    public typealias Completion<Entity: EntityType> = (Result<Entity, ClientError>) -> Void
     
     public enum APIVersion: String {
         case v1
@@ -15,9 +15,16 @@ public class Client {
         case delete
     }
     
+    public enum ClientError: Swift.Error {
+        case decodeError(Error?)
+        case apiError(AppStoreConnectError)
+        case unknown
+    }
+    
     private let token: String
     private var apiVersion: APIVersion = .v1
     private static let baseURL = URL(string: "https://api.appstoreconnect.apple.com/")!
+    private let decoder = JSONDecoder()
     
     private var baseURL: URL {
         return Client.baseURL.appendingPathComponent(apiVersion.rawValue)
@@ -48,11 +55,23 @@ public class Client {
         }
         let request = urlRequest(of: .get, to: url)
         URLSession.shared.dataTask(with: request) { data, response, error in
+            let result: Result<Entity, ClientError>
             if let data = data {
-                if error != nil {
-                } else {
+                do {
+                    if error == nil {
+                        let response = try self.decoder.decode(Entity.self, from: data)
+                        result = .init(value: response)
+                    } else {
+                        let errorObject = try self.decoder.decode(AppStoreConnectError.self, from: data)
+                        result = .init(error: .apiError(errorObject))
+                    }
+                } catch {
+                    result = .init(error: .decodeError(error))
                 }
+            } else {
+                result = .init(error: .unknown)
             }
-        }.resume()
+            completion(result)
+            }.resume()
     }
 }

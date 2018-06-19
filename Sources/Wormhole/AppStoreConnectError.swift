@@ -1,6 +1,6 @@
 import Foundation
 
-public struct AppStoreConnectError: Error, Decodable {
+public struct AppStoreConnectError: Decodable {
     public struct Source: Decodable {
         let parameter: String
     }
