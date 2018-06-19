@@ -1,7 +1,7 @@
 import XCTest
 
-import WarmholeTests
+import WormholeTests
 
 var tests = [XCTestCaseEntry]()
-tests += WarmholeTests.allTests()
+tests += WormholeTests.allTests()
 XCTMain(tests)

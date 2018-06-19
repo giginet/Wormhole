@@ -1,7 +1,7 @@
 import XCTest
-@testable import Warmhole
+@testable import Wormhole
 
-final class WarmholeTests: XCTestCase {
+final class WormholeTests: XCTestCase {
     func testExample() {
         let privateKey = """
 -----BEGIN PRIVATE KEY-----
