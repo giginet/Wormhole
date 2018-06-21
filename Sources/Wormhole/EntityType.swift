@@ -1,9 +1,28 @@
 import Foundation
 
-public protocol EntityType: Decodable { }
+public protocol AttributeType: Decodable { }
 
-struct EntityContainer<Entity: EntityType>: Decodable {
-    let data: Entity
+public struct Entity<Attribute: AttributeType>: Decodable {
+    let id: UUID?
+    let type: String?
+    let attributes: Attribute?
+    
+    enum CodingKeys: String, CodingKey {
+        case id
+        case type
+        case attributes
+    }
+    
+    public init(from decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: CodingKeys.self)
+        id = try container.decodeIfPresent(UUID.self, forKey: .id)
+        type = try container.decodeIfPresent(String.self, forKey: .type)
+        attributes = try container.decodeIfPresent(Attribute.self, forKey: .attributes)
+    }
+}
+
+struct EntityContainer<Attribute: AttributeType>: Decodable {
+    let data: Entity<Attribute>
     
     enum CodingKeys: String, CodingKey {
         case data
@@ -12,8 +31,6 @@ struct EntityContainer<Entity: EntityType>: Decodable {
     init(_ decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: CodingKeys.self)
         var nested = try container.nestedUnkeyedContainer(forKey: .data)
-        data = try nested.decode(Entity.self)
+        data = try nested.decode(Entity<Attribute>.self)
     }
 }
-
-extension Array: EntityType where Element: EntityType { }

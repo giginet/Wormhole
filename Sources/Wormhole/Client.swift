@@ -2,7 +2,7 @@ import Foundation
 import Result
 
 public class Client {
-    public typealias Completion<Entity: EntityType> = (Result<Entity, ClientError>) -> Void
+    public typealias Completion<Attribute: AttributeType> = (Result<Entity<Attribute>, ClientError>) -> Void
     
     public enum APIVersion: String {
         case v1
@@ -44,9 +44,9 @@ public class Client {
         token = try encoder.encode(issuerID: issuerID, keyID: keyID)
     }
     
-    public func get<Entity: EntityType>(to path: String,
-                                        queryItems: [URLQueryItem] = [],
-                                        completion: @escaping Completion<Entity>) {
+    public func get<Attribute: AttributeType>(from path: String,
+                                              queryItems: [URLQueryItem] = [],
+                                              completion: @escaping Completion<Attribute>) {
         var components = URLComponents()
         components.path = path
         components.queryItems = queryItems
@@ -55,11 +55,11 @@ public class Client {
         }
         let request = urlRequest(of: .get, to: url)
         URLSession.shared.dataTask(with: request) { data, response, error in
-            let result: Result<Entity, ClientError>
+            let result: Result<Entity<Attribute>, ClientError>
             if let data = data {
                 do {
                     if error == nil {
-                        let response = try self.decoder.decode(Entity.self, from: data)
+                        let response = try self.decoder.decode(Entity<Attribute>.self, from: data)
                         result = .init(value: response)
                     } else {
                         let errorContainer = try self.decoder.decode(ErrorsContainer.self, from: data)
@@ -75,7 +75,7 @@ public class Client {
             }.resume()
     }
     
-    public func delete(to path: String,
+    public func delete(of path: String,
                        completion: @escaping (Result<Void, ClientError>) -> Void) {
         let url = baseURL.appendingPathComponent(path)
         let request = urlRequest(of: .delete, to: url)
@@ -94,6 +94,6 @@ public class Client {
                 result = .init(error: .unknown)
             }
             completion(result)
-        }.resume()
+            }.resume()
     }
 }
