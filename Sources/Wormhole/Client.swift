@@ -57,8 +57,8 @@ public struct Client {
     }
     
     public init(p8Path: URL,
-                issuerID: Int,
-                keyID: UUID,
+                issuerID: UUID,
+                keyID: String,
                 requestClient: RequestClientType = URLSessionClient()) throws {
         let encoder = try JWTEncoder(fileURL: p8Path)
         token = try encoder.encode(issuerID: issuerID, keyID: keyID)

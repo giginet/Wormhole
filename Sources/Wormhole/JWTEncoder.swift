@@ -20,7 +20,7 @@ struct JWTEncoder {
         self.privateKey = privateKey
     }
     
-    func encode(issuerID: Int, keyID: UUID) throws -> String {
+    func encode(issuerID: UUID, keyID: String) throws -> String {
         let impl = JWTEncoderImpl()
         return impl.encode(with: privateKey, issuerID: issuerID, keyID: keyID)
     }

@@ -20,8 +20,8 @@ final class ClientTests: XCTestCase {
         let bundle = Bundle(for: ClientTests.self)
         let url = URL(fileURLWithPath: bundle.path(forResource: "private", ofType: "p8")!)
         return try! Client(p8Path: url,
-                           issuerID: 999999,
-                           keyID: UUID(),
+                           issuerID: UUID(),
+                           keyID: "999999",
                            requestClient: requestClient)
     }
     func makeResponse(to path: String, statusCode: Int) -> HTTPURLResponse {
