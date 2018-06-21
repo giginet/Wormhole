@@ -29,8 +29,8 @@ struct User: AttributeType {
 }
 
 let client = try! Client(p8Path: URL(fileURLWithPath: "/path/to/private_key.p8"), 
-                         issuerID: 10000, 
-                         keyID: UUID(uuidString: "b91d85c7-b7db-4451-8f3f-9a3c8af9a392"))
+                         issuerID: UUID(uuidString: "b91d85c7-b7db-4451-8f3f-9a3c8af9a392"), 
+                         keyID: "100000")
 client.get(from: "/users") { (result: CollectionResult<User>) in
     switch result {
     case .success(let container):
