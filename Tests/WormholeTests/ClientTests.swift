@@ -35,7 +35,7 @@ final class ClientTests: XCTestCase {
     func testGet() {
         requestClient.data = loadJSON(from: "user")
         requestClient.response = makeResponse(to: "/users", statusCode: 200)
-        client.get(from: "/users") { (result: ResponseResult<SingleContainer<User>>) in
+        client.get(from: "/users") { (result: SingleResult<User>) in
             switch result {
             case .success(let container):
                 let user = container.data

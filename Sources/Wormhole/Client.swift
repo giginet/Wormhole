@@ -21,11 +21,12 @@ public enum ClientError: Swift.Error {
     case unknown
 }
 
-public typealias ResponseResult<EntityContainer: EntityContainerType> = Result<EntityContainer, ClientError>
+public typealias SingleResult<Attribute: AttributeType> = Result<SingleContainer<Attribute>, ClientError>
+public typealias CollectionResult<Attribute: AttributeType> = Result<CollectionContainer<Attribute>, ClientError>
 
 public class Client {
     private var requestClient: RequestClientType
-    public typealias Completion<EntityContainer: EntityContainerType> = (ResponseResult<EntityContainer>) -> Void
+    public typealias Completion<EntityContainer: EntityContainerType> = (Result<EntityContainer, ClientError>) -> Void
     
     public enum APIVersion: String {
         case v1
