@@ -13,7 +13,7 @@ final class EntityTests: XCTestCase {
     func testDecodeSingleObject() {
         let jsonData = loadJSON(from: "user")
         let decoder = JSONDecoder()
-        let container = try? decoder.decode(EntityContainer<User>.self, from: jsonData)
+        let container = try? decoder.decode(SingleContainer<User>.self, from: jsonData)
         XCTAssertNotNil(container?.data.id)
         XCTAssertEqual(container?.data.attributes?.firstName, "John")
     }
@@ -21,7 +21,7 @@ final class EntityTests: XCTestCase {
     func testDecodeMultipleObjects() {
         let jsonData = loadJSON(from: "users")
         let decoder = JSONDecoder()
-        let container = try? decoder.decode(EntityCollectionContainer<User>.self, from: jsonData)
+        let container = try? decoder.decode(CollectionContainer<User>.self, from: jsonData)
         XCTAssertEqual(container?.data.count, 2)
     }
 }

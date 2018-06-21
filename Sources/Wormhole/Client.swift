@@ -2,7 +2,7 @@ import Foundation
 import Result
 
 public class Client {
-    public typealias Completion<Attribute: AttributeType> = (Result<Entity<Attribute>, ClientError>) -> Void
+    public typealias Completion<EntityContainer: EntityContainerType> = (Result<EntityContainer, ClientError>) -> Void
     
     public enum APIVersion: String {
         case v1
@@ -44,9 +44,9 @@ public class Client {
         token = try encoder.encode(issuerID: issuerID, keyID: keyID)
     }
     
-    public func get<Attribute: AttributeType>(from path: String,
-                                              queryItems: [URLQueryItem] = [],
-                                              completion: @escaping Completion<Attribute>) {
+    public func get<EntityContainer: EntityContainerType>(from path: String,
+                                                          queryItems: [URLQueryItem] = [],
+                                                          completion: @escaping Completion<EntityContainer>) {
         var components = URLComponents()
         components.path = path
         components.queryItems = queryItems
@@ -55,11 +55,11 @@ public class Client {
         }
         let request = urlRequest(of: .get, to: url)
         URLSession.shared.dataTask(with: request) { data, response, error in
-            let result: Result<Entity<Attribute>, ClientError>
+            let result: Result<EntityContainer, ClientError>
             if let data = data {
                 do {
                     if error == nil {
-                        let response = try self.decoder.decode(Entity<Attribute>.self, from: data)
+                        let response = try self.decoder.decode(EntityContainer.self, from: data)
                         result = .init(value: response)
                     } else {
                         let errorContainer = try self.decoder.decode(ErrorsContainer.self, from: data)

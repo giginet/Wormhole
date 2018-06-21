@@ -6,26 +6,17 @@ public struct Entity<Attribute: AttributeType>: Decodable {
     let id: UUID?
     let type: String?
     let attributes: Attribute?
-    
-    enum CodingKeys: String, CodingKey {
-        case id
-        case type
-        case attributes
-    }
-    
-    public init(from decoder: Decoder) throws {
-        let container = try decoder.container(keyedBy: CodingKeys.self)
-        id = try container.decodeIfPresent(UUID.self, forKey: .id)
-        type = try container.decodeIfPresent(String.self, forKey: .type)
-        attributes = try container.decodeIfPresent(Attribute.self, forKey: .attributes)
-    }
+}
+
+public protocol EntityContainerType: Decodable {
+    associatedtype Attribute: AttributeType
 }
 
 private enum EntityCodingKeys: String, CodingKey {
     case data
 }
 
-struct EntityContainer<Attribute: AttributeType>: Decodable {
+struct SingleContainer<Attribute: AttributeType>: Decodable, EntityContainerType {
     let data: Entity<Attribute>
     
     init(_ decoder: Decoder) throws {
@@ -35,7 +26,7 @@ struct EntityContainer<Attribute: AttributeType>: Decodable {
     }
 }
 
-struct EntityCollectionContainer<Attribute: AttributeType>: Decodable {
+struct CollectionContainer<Attribute: AttributeType>: Decodable, EntityContainerType {
     let data: [Entity<Attribute>]
     
     init(_ decoder: Decoder) throws {
