@@ -1,7 +1,22 @@
 import Foundation
 import Result
 
+private let baseEndpointURL = URL(string: "https://api.appstoreconnect.apple.com/")!
+
+public protocol RequestClientType {
+    func request(with request: URLRequest,
+                 completion: @escaping (_ data: Data?, _ response: URLResponse?, _ error: Error?) -> Void)
+}
+
+public struct URLSessionClient: RequestClientType {
+    public init() { }
+    public func request(with request: URLRequest, completion: @escaping (Data?, URLResponse?, Error?) -> Void) {
+        URLSession.shared.dataTask(with: request, completionHandler: completion).resume()
+    }
+}
+
 public class Client {
+    private var requestClient: RequestClientType
     public typealias Completion<EntityContainer: EntityContainerType> = (Result<EntityContainer, ClientError>) -> Void
     
     public enum APIVersion: String {
@@ -23,11 +38,10 @@ public class Client {
     
     private let token: String
     private var apiVersion: APIVersion = .v1
-    private static let baseURL = URL(string: "https://api.appstoreconnect.apple.com/")!
     private let decoder = JSONDecoder()
     
     private var baseURL: URL {
-        return Client.baseURL.appendingPathComponent(apiVersion.rawValue)
+        return baseEndpointURL.appendingPathComponent(apiVersion.rawValue)
     }
     
     private func urlRequest(of method: Method, to url: URL) -> URLRequest {
@@ -39,9 +53,13 @@ public class Client {
         return request
     }
     
-    public init(p8Path: URL, issuerID: Int, keyID: UUID) throws {
+    public init(p8Path: URL,
+                issuerID: Int,
+                keyID: UUID,
+                requestClient: RequestClientType = URLSessionClient()) throws {
         let encoder = try JWTEncoder(fileURL: p8Path)
         token = try encoder.encode(issuerID: issuerID, keyID: keyID)
+        self.requestClient = requestClient
     }
     
     public func get<EntityContainer: EntityContainerType>(from path: String,
@@ -54,7 +72,7 @@ public class Client {
             return
         }
         let request = urlRequest(of: .get, to: url)
-        URLSession.shared.dataTask(with: request) { data, response, error in
+        requestClient.request(with: request) { data, response, error in
             let result: Result<EntityContainer, ClientError>
             if let data = data {
                 do {
@@ -72,14 +90,14 @@ public class Client {
                 result = .init(error: .unknown)
             }
             completion(result)
-            }.resume()
+        }
     }
     
     public func delete(of path: String,
                        completion: @escaping (Result<Void, ClientError>) -> Void) {
         let url = baseURL.appendingPathComponent(path)
         let request = urlRequest(of: .delete, to: url)
-        URLSession.shared.dataTask(with: request) { data, response, error in
+        requestClient.request(with: request) { data, response, error in
             let result: Result<Void, ClientError>
             if let httpURLResponse = response as? HTTPURLResponse, httpURLResponse.statusCode == 204 {
                 result = .init(value: ())
@@ -94,6 +112,6 @@ public class Client {
                 result = .init(error: .unknown)
             }
             completion(result)
-            }.resume()
+            }
     }
 }
