@@ -1,8 +1,8 @@
 import Foundation
 
-public struct AppStoreConnectError: Decodable {
+public struct AppStoreConnectError: Decodable, CustomStringConvertible {
     public struct Source: Decodable {
-        let parameter: String
+        let parameter: String?
     }
     
     public let id: UUID
@@ -11,14 +11,8 @@ public struct AppStoreConnectError: Decodable {
     public let title: String
     public let detail: String
     public let source: Source?
-    
-    enum CodingKeys: String, CodingKey {
-        case id
-        case status
-        case code
-        case title
-        case detail
-        case source
+    public var description: String {
+        return "\(status) \(title): \(detail)"
     }
 }
 

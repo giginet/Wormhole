@@ -17,4 +17,12 @@ final class AppStoreConnectErrorTests: XCTestCase {
         XCTAssertEqual(error.code, "PARAMETER_ERROR.INVALID")
         XCTAssertNotNil(error.source)
     }
+    
+    func testDescription() {
+        let jsonData = loadJSON(from: "errors")
+        let decoder = JSONDecoder()
+        let container = try! decoder.decode(ErrorsContainer.self, from: jsonData)
+        let error = container.errors.first!
+        XCTAssertEqual(String(describing: error), "400 A parameter has an invalid value: 'emaill' is not a valid filter type")
+    }
 }
