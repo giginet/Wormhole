@@ -21,16 +21,26 @@ public struct Entity<Attribute: AttributeType>: Decodable {
     }
 }
 
+private enum EntityCodingKeys: String, CodingKey {
+    case data
+}
+
 struct EntityContainer<Attribute: AttributeType>: Decodable {
     let data: Entity<Attribute>
     
-    enum CodingKeys: String, CodingKey {
-        case data
-    }
-    
     init(_ decoder: Decoder) throws {
-        let container = try decoder.container(keyedBy: CodingKeys.self)
+        let container = try decoder.container(keyedBy: EntityCodingKeys.self)
         var nested = try container.nestedUnkeyedContainer(forKey: .data)
         data = try nested.decode(Entity<Attribute>.self)
+    }
+}
+
+struct EntityCollectionContainer<Attribute: AttributeType>: Decodable {
+    let data: [Entity<Attribute>]
+    
+    init(_ decoder: Decoder) throws {
+        let container = try decoder.container(keyedBy: EntityCodingKeys.self)
+        var nested = try container.nestedUnkeyedContainer(forKey: .data)
+        data = try nested.decode([Entity<Attribute>].self)
     }
 }

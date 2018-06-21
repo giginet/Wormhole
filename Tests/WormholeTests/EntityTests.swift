@@ -18,10 +18,10 @@ final class EntityTests: XCTestCase {
         XCTAssertEqual(container?.data.attributes?.firstName, "John")
     }
     
-    //    func testDecodeMultipleObjects() {
-    //        let jsonData = loadJSON(from: "users")
-    //        let decoder = JSONDecoder()
-    //        let container = try? decoder.decode(EntityContainer<[User]>.self, from: jsonData)
-    //        XCTAssertEqual(container?.data.count, 2)
-    //    }
+    func testDecodeMultipleObjects() {
+        let jsonData = loadJSON(from: "users")
+        let decoder = JSONDecoder()
+        let container = try? decoder.decode(EntityCollectionContainer<User>.self, from: jsonData)
+        XCTAssertEqual(container?.data.count, 2)
+    }
 }

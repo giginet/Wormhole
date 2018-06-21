@@ -2,11 +2,31 @@
   "data": [
     {
       "type": "users",
-      "id": "b91d85c7-b7db-4451-8f3f-9a3c8af9a392"
+      "id": "b91d85c7-b7db-4451-8f3f-9a3c8af9a392",
+      "attributes": {
+        "firstName": "John",
+        "lastName": "Appleseed",
+        "email": "john-appleseed@mac.com",
+        "inviteType": "EMAIL"
+      },
+      "relationships": {},
+      "links": {
+        "self": ".../v1/betaTesters/4277b871-ce4e-4fc7-9e34"
+      }
     }, 
     {
       "type": "users",
-      "id": "093a04ed-b021-42e3-a1df-5d064f05ec3f"
+      "id": "093a04ed-b021-42e3-a1df-5d064f05ec3f",
+      "attributes": {
+        "firstName": "John",
+        "lastName": "Appleseed",
+        "email": "john-appleseed@mac.com",
+        "inviteType": "EMAIL"
+      },
+      "relationships": {},
+      "links": {
+        "self": ".../v1/betaTesters/4277b871-ce4e-4fc7-9e34"
+      }
     }
   ]
 }
