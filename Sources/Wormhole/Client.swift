@@ -15,9 +15,17 @@ public struct URLSessionClient: RequestClientType {
     }
 }
 
+public enum ClientError: Swift.Error {
+    case decodeError(Error?)
+    case apiError([AppStoreConnectError])
+    case unknown
+}
+
+public typealias ResponseResult<EntityContainer: EntityContainerType> = Result<EntityContainer, ClientError>
+
 public class Client {
     private var requestClient: RequestClientType
-    public typealias Completion<EntityContainer: EntityContainerType> = (Result<EntityContainer, ClientError>) -> Void
+    public typealias Completion<EntityContainer: EntityContainerType> = (ResponseResult<EntityContainer>) -> Void
     
     public enum APIVersion: String {
         case v1
@@ -28,12 +36,6 @@ public class Client {
         case post
         case patch
         case delete
-    }
-    
-    public enum ClientError: Swift.Error {
-        case decodeError(Error?)
-        case apiError([AppStoreConnectError])
-        case unknown
     }
     
     private let token: String

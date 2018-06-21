@@ -3,9 +3,9 @@ import Foundation
 public protocol AttributeType: Decodable { }
 
 public struct Entity<Attribute: AttributeType>: Decodable {
-    let id: UUID?
-    let type: String?
-    let attributes: Attribute?
+    public let id: UUID?
+    public let type: String?
+    public let attributes: Attribute?
 }
 
 public protocol EntityContainerType: Decodable {
@@ -16,8 +16,8 @@ private enum EntityCodingKeys: String, CodingKey {
     case data
 }
 
-struct SingleContainer<Attribute: AttributeType>: Decodable, EntityContainerType {
-    let data: Entity<Attribute>
+public struct SingleContainer<Attribute: AttributeType>: Decodable, EntityContainerType {
+    public let data: Entity<Attribute>
     
     init(_ decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: EntityCodingKeys.self)
@@ -26,8 +26,8 @@ struct SingleContainer<Attribute: AttributeType>: Decodable, EntityContainerType
     }
 }
 
-struct CollectionContainer<Attribute: AttributeType>: Decodable, EntityContainerType {
-    let data: [Entity<Attribute>]
+public struct CollectionContainer<Attribute: AttributeType>: Decodable, EntityContainerType {
+    public let data: [Entity<Attribute>]
     
     init(_ decoder: Decoder) throws {
         let container = try decoder.container(keyedBy: EntityCodingKeys.self)

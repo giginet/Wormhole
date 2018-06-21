@@ -2,13 +2,6 @@ import Foundation
 import XCTest
 @testable import Wormhole
 
-struct User: AttributeType {
-    let firstName: String
-    let lastName: String
-    let email: String
-    let inviteType: String
-}
-
 final class EntityTests: XCTestCase {
     func testDecodeSingleObject() {
         let jsonData = loadJSON(from: "user")
