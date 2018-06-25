@@ -8,7 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		076FB61620D970950024DF82 /* Wormhole.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 076FB60C20D970950024DF82 /* Wormhole.framework */; };
-		076FB62E20D970CA0024DF82 /* JWTEncoderImpl.mm in Sources */ = {isa = PBXBuildFile; fileRef = 076FB62720D970CA0024DF82 /* JWTEncoderImpl.mm */; };
 		076FB63020D970CA0024DF82 /* AppStoreConnectError.swift in Sources */ = {isa = PBXBuildFile; fileRef = 076FB62920D970CA0024DF82 /* AppStoreConnectError.swift */; };
 		076FB63120D970CA0024DF82 /* JWTEncoder.swift in Sources */ = {isa = PBXBuildFile; fileRef = 076FB62A20D970CA0024DF82 /* JWTEncoder.swift */; };
 		076FB63220D970CA0024DF82 /* Client.swift in Sources */ = {isa = PBXBuildFile; fileRef = 076FB62B20D970CA0024DF82 /* Client.swift */; };
@@ -39,8 +38,6 @@
 /* Begin PBXFileReference section */
 		076FB60C20D970950024DF82 /* Wormhole.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Wormhole.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		076FB61520D970950024DF82 /* WormholeTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = WormholeTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
-		076FB62720D970CA0024DF82 /* JWTEncoderImpl.mm */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.objcpp; path = JWTEncoderImpl.mm; sourceTree = "<group>"; };
-		076FB62820D970CA0024DF82 /* JWTEncoderImpl.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = JWTEncoderImpl.h; sourceTree = "<group>"; };
 		076FB62920D970CA0024DF82 /* AppStoreConnectError.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = AppStoreConnectError.swift; sourceTree = "<group>"; };
 		076FB62A20D970CA0024DF82 /* JWTEncoder.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = JWTEncoder.swift; sourceTree = "<group>"; };
 		076FB62B20D970CA0024DF82 /* Client.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Client.swift; sourceTree = "<group>"; };
@@ -101,8 +98,6 @@
 		076FB62620D970CA0024DF82 /* Wormhole */ = {
 			isa = PBXGroup;
 			children = (
-				076FB62720D970CA0024DF82 /* JWTEncoderImpl.mm */,
-				076FB62820D970CA0024DF82 /* JWTEncoderImpl.h */,
 				076FB62920D970CA0024DF82 /* AppStoreConnectError.swift */,
 				076FB62A20D970CA0024DF82 /* JWTEncoder.swift */,
 				076FB62B20D970CA0024DF82 /* Client.swift */,
@@ -307,7 +302,6 @@
 				076FB63120D970CA0024DF82 /* JWTEncoder.swift in Sources */,
 				076FB63020D970CA0024DF82 /* AppStoreConnectError.swift in Sources */,
 				076FB63220D970CA0024DF82 /* Client.swift in Sources */,
-				076FB62E20D970CA0024DF82 /* JWTEncoderImpl.mm in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -487,8 +481,8 @@
 					/usr/local/opt/openssl/lib,
 				);
 				OTHER_LDFLAGS = (
-					"-lcrypto",
-					"-lssl",
+					"-ljose",
+					"-ljansson",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = org.giginet.Wormhole;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
@@ -531,8 +525,8 @@
 					/usr/local/opt/openssl/lib,
 				);
 				OTHER_LDFLAGS = (
-					"-lcrypto",
-					"-lssl",
+					"-ljose",
+					"-ljansson",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = org.giginet.Wormhole;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
@@ -554,12 +548,15 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/Carthage/Build/Mac",
 				);
+				HEADER_SEARCH_PATHS = /usr/local/include;
 				INFOPLIST_FILE = Tests/WormholeTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 					"@loader_path/../Frameworks",
 				);
+				LIBRARY_SEARCH_PATHS = /usr/local/lib;
+				OTHER_LDFLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = org.giginet.WormholeTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
@@ -579,12 +576,15 @@
 					"$(inherited)",
 					"$(PROJECT_DIR)/Carthage/Build/Mac",
 				);
+				HEADER_SEARCH_PATHS = /usr/local/include;
 				INFOPLIST_FILE = Tests/WormholeTests/Info.plist;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/../Frameworks",
 					"@loader_path/../Frameworks",
 				);
+				LIBRARY_SEARCH_PATHS = /usr/local/lib;
+				OTHER_LDFLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = org.giginet.WormholeTests;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE_SPECIFIER = "";
