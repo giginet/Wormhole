@@ -61,8 +61,9 @@ public struct Client {
                 keyID: String,
                 requestClient: RequestClientType = URLSessionClient()) throws {
         let encoder = try JWTEncoder(fileURL: p8Path)
-        token = try encoder.encode(issuerID: issuerID, keyID: keyID)
+        let token = try encoder.encode(issuerID: issuerID, keyID: keyID)
         self.requestClient = requestClient
+        self.token = token
     }
     
     public func get<EntityContainer: EntityContainerType>(from path: String,
