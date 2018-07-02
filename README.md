@@ -15,7 +15,7 @@ This library is currently developing.
 - [ ] POST
 - [ ] PATCH
 - [ ] Swift Package Manager support
-    - Currently, it uses cpp-jwt, so it can't be built with SPM.
+- [ ] Linux Support
 
 ## Installation
 
