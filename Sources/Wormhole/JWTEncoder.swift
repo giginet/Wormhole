@@ -21,36 +21,38 @@ struct JWTEncoder {
     }
     
     func encode(issuerID: UUID, keyID: String) throws -> String {
-//        let header = UnsafeMutablePointer<json_t>.allocate(capacity: MemoryLayout<json_t>.size)
-        let header = json_object()
-        let alg = json_string("ES256")
-        let typ = json_string("JWT")
-        let kid = json_string(keyID.cString(using: .utf8))
-        json_object_set(header, "alg", alg)
-        json_object_set(header, "typ", typ)
-        json_object_set(header, "kid", kid)
+        let object = UnsafeMutablePointer<OpaquePointer?>.allocate(capacity: MemoryLayout<OpaquePointer>.size)
+        jwt_new(object)
+        defer { jwt_free(object.pointee) }
         
-        let payload = json_object()
-        let iss = json_string(issuerID.uuidString.lowercased().cString(using: .utf8))
-        let exp = json_integer(json_int_t(Date(timeIntervalSinceNow: 60 * 20).timeIntervalSince1970))
-        let aud = json_string("appstoreconnect-v1")
-        json_object_set(payload, "iss", iss)
-        json_object_set(payload, "exp", exp)
-        json_object_set(payload, "aud", aud)
+        let keyPointer = convertToCString(privateKey)
+        jwt_set_alg(object.pointee,
+                    JWT_ALG_ES256,
+                    keyPointer,
+                    Int32(privateKey.utf16.count + 1))
+        jwt_add_header(object.pointee, "kid", keyID)
         
-        let jwkObject = json_object()
-        json_object_set(jwkObject, "alg", json_string("ES256"))
+        jwt_add_grant(object.pointee, "iss", issuerID.uuidString.lowercased())
+        let expirationDate = Date().addingTimeInterval(20 * 60)
+        jwt_add_grant_int(object.pointee, "exp", Int(expirationDate.timeIntervalSince1970))
+        jwt_add_grant(object.pointee, "aud", "appstoreconnect-v1")
         
-        let dlen = jose_jwk_thp_buf(nil, nil, "ES256", nil, 0)
-        let dec = UnsafeMutablePointer<UInt8>.allocate(capacity: dlen)
-        let elen = jose_b64_enc_buf(nil, dlen, nil, 0)
-        let enc = UnsafeMutablePointer<UInt8>.allocate(capacity: elen)
+        guard let encodedCString = jwt_encode_str(object.pointee) else {
+            throw Error.decodeError
+        }
         
-        jose_jwk_thp_buf(nil, jwkObject, "ES256", dec, dlen)
-        jose_b64_enc_buf(dec, dlen, enc, elen)
-//        jose_jwk_gen(nil, jwk)
-        
-//        return impl.encode(with: privateKey, issuerID: issuerID, keyID: keyID)
-        return String(cString: enc)
+        return String(cString: encodedCString)
     }
+}
+
+fileprivate func convertToCString(_ string: String) -> UnsafeMutablePointer<UInt8>? {
+    let result = string.withCString { c -> (Int, UnsafeMutablePointer<Int8>?) in
+        let len = Int(strlen(c) + 1)
+        let dst = strcpy(UnsafeMutablePointer<CChar>.allocate(capacity: len), c)
+        return (len, dst)
+    }
+    let uint8 = UnsafeMutablePointer<UInt8>.allocate(capacity: result.0)
+    memcpy(uint8, result.1, result.0)
+    result.1?.deallocate()
+    return uint8
 }

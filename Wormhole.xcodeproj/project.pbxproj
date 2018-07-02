@@ -465,7 +465,6 @@
 				);
 				FRAMEWORK_VERSION = A;
 				HEADER_SEARCH_PATHS = (
-					"$(SRCROOT)/Sources/cpp-jwt/include",
 					/usr/local/include,
 					/usr/local/opt/openssl/include,
 				);
@@ -481,8 +480,8 @@
 					/usr/local/opt/openssl/lib,
 				);
 				OTHER_LDFLAGS = (
-					"-ljose",
 					"-ljansson",
+					"-ljwt",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = org.giginet.Wormhole;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
@@ -509,7 +508,6 @@
 				);
 				FRAMEWORK_VERSION = A;
 				HEADER_SEARCH_PATHS = (
-					"$(SRCROOT)/Sources/cpp-jwt/include",
 					/usr/local/include,
 					/usr/local/opt/openssl/include,
 				);
@@ -525,8 +523,8 @@
 					/usr/local/opt/openssl/lib,
 				);
 				OTHER_LDFLAGS = (
-					"-ljose",
 					"-ljansson",
+					"-ljwt",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = org.giginet.Wormhole;
 				PRODUCT_NAME = "$(TARGET_NAME:c99extidentifier)";
