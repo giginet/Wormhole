@@ -17,6 +17,17 @@ This library is currently developing.
 - [ ] Swift Package Manager support
     - Currently, it uses cpp-jwt, so it can't be built with SPM.
 
+## Installation
+
+### libjwt
+
+You need to install unstable version of [libjwt](https://github.com/benmcollins/libjwt).
+
+```
+$ brew tap giginet/libjwt https://github.com/giginet/libjwt.git
+$ brew install giginet/libjwt/libjwt
+```
+
 ## Usage
 
 ```swift
