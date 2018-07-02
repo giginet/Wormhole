@@ -27,7 +27,7 @@ struct JWTEncoder {
         defer { jwt_free(object.pointee) }
         
         let keyPointer = convertToCString(privateKey)
-        defer { keyPointer?.deallocate() }
+        defer { keyPointer.deallocate() }
         
         jwt_set_alg(object.pointee,
                     JWT_ALG_ES256,
@@ -48,7 +48,7 @@ struct JWTEncoder {
         return String(cString: encodedCString)
     }
     
-    private func convertToCString(_ string: String) -> UnsafeMutablePointer<UInt8>? {
+    private func convertToCString(_ string: String) -> UnsafeMutablePointer<UInt8> {
         let result = string.withCString { c -> (Int, UnsafeMutablePointer<Int8>?) in
             let len = Int(strlen(c) + 1)
             let dst = strcpy(UnsafeMutablePointer<CChar>.allocate(capacity: len), c)
