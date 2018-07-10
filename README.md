@@ -14,7 +14,7 @@ This library is currently developing.
 - [x] DELETE
 - [ ] POST
 - [ ] PATCH
-- [ ] Swift Package Manager support
+- [x] Swift Package Manager support
 - [ ] Linux Support
 
 ## Installation
@@ -28,9 +28,46 @@ $ brew tap giginet/libjwt https://github.com/giginet/libjwt.git
 $ brew install giginet/libjwt/libjwt
 ```
 
+## Integrate to your project
+
+Add the dependency to your `Package.swift`.
+
+```swift
+let package = Package(
+    name: "YourProject",
+    products: [
+        .library(
+            name: "YourProject",
+            targets: ["YourProject"]),
+    ],
+    dependencies: [
+        .package(url: "https://github.com/giginet/Wormhole.git", from: "0.0.1"),
+    ],
+    targets: [
+        .target(
+            name: "YourProject",
+            dependencies: ["Wormhole"]),
+    ]
+)
+```
+
+## Build
+
+```console
+$ swift build -Xcc -I/usr/local/include -Xlinker -L/usr/local/lib
+```
+
+## Generate Xcode project
+
+```console
+$ swift package generate-xcodeproj --xcconfig-overrides Config.xcconfig
+$ open ./Wormhole.xcodeproj
+```
+
 ## Usage
 
 ```swift
+import Wormhole
 
 struct User: AttributeType {
     let firstName: String
