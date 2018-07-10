@@ -2,6 +2,33 @@
   "object": {
     "pins": [
       {
+        "package": "Jansson",
+        "repositoryURL": "https://github.com/giginet/jansson-swift.git",
+        "state": {
+          "branch": null,
+          "revision": "d459ea0dbc8f04e5a694c22bc60b387a194d3c6c",
+          "version": "1.0.0"
+        }
+      },
+      {
+        "package": "JWT",
+        "repositoryURL": "https://github.com/giginet/libjwt-swift.git",
+        "state": {
+          "branch": null,
+          "revision": "1c7824cafb522031a351ece348af80802f7d93f4",
+          "version": null
+        }
+      },
+      {
+        "package": "OpenSSL",
+        "repositoryURL": "https://github.com/IBM-Swift/OpenSSL.git",
+        "state": {
+          "branch": null,
+          "revision": "95c405c18a071a1c13616e984ba1b3c6091ca6ca",
+          "version": "1.0.0"
+        }
+      },
+      {
         "package": "Result",
         "repositoryURL": "https://github.com/antitypical/Result.git",
         "state": {

@@ -13,13 +13,14 @@ let package = Package(
     ],
     dependencies: [
         .package(url: "https://github.com/antitypical/Result.git", from: "4.0.0"),
+        .package(url: "https://github.com/giginet/libjwt-swift.git", .revision("1c7824cafb522031a351ece348af80802f7d93f4")),
     ],
     targets: [
         // Targets are the basic building blocks of a package. A target can define a module or a test suite.
         // Targets can depend on other targets in this package, and on products in packages which this package depends on.
         .target(
             name: "Wormhole",
-            dependencies: ["Result"]),
+            dependencies: ["Result", "JWT"]),
         .testTarget(
             name: "WormholeTests",
             dependencies: ["Wormhole"]),

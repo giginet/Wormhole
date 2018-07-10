@@ -1,4 +1,5 @@
 import Foundation
+import JWT
 
 struct JWTEncoder {
     enum Error: Swift.Error {
