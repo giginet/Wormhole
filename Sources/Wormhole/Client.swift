@@ -97,7 +97,7 @@ public struct Client {
         }
     }
     
-    public func delete(of path: String,
+    public func delete(contentsOf path: String,
                        completion: @escaping (Result<Void, ClientError>) -> Void) {
         let url = baseURL.appendingPathComponent(path)
         let request = urlRequest(of: .delete, to: url)
