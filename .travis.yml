@@ -1,0 +1,13 @@
+matrix:
+  include:
+    - env: OS=macOS
+      before_install:
+        - export PREFIX=`brew --prefix`
+      os: osx
+      osx_image: xcode10
+      language: objective-c
+      install:
+        - brew tap giginet/libjwt https://github.com/giginet/libjwt.git
+        - brew install giginet/libjwt/libjwt
+script:
+- swift test -Xcc -I${PREFIX}/include -Xlinker -L${PREFIX}/lib
