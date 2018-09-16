@@ -60,6 +60,21 @@ final class ClientTests: XCTestCase {
         }
     }
     
+    func testPost() {
+        struct UserInvitation: AttributeType {
+            let firstName: String
+            let lastName: String
+            let email: String
+            let roles: [String]
+            let allAppsVisible: Bool
+        }
+        struct UserInvitationRequestPayload: RequestPayloadType {
+            var type: String
+            typealias Attribute = UserInvitation
+            
+        }
+    }
+    
     func testDelete() {
         let uuid = UUID()
         session.response = makeResponse(to: "/users/\(uuid.uuidString)", statusCode: 204)

@@ -1,6 +1,7 @@
 import Foundation
 
-public protocol AttributeType: Decodable { }
+public protocol AttributeType: Codable { }
+public struct VoidAttribute: AttributeType { }
 
 public struct Entity<Attribute: AttributeType>: Decodable {
     public let id: UUID?
@@ -44,7 +45,6 @@ public struct CollectionContainer<Attribute: AttributeType>: Decodable, EntityCo
 }
 
 public struct VoidContainer: Decodable, EntityContainerType {
-    public struct VoidAttribute: AttributeType { }
     public typealias Attribute = VoidAttribute
     
     init(_ decoder: Decoder) { }
