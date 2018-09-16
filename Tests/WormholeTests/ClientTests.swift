@@ -68,11 +68,32 @@ final class ClientTests: XCTestCase {
             let roles: [String]
             let allAppsVisible: Bool
         }
-//        struct UserInvitationRequestPayload: RequestPayloadType {
-//            var type: String
-//            typealias Attribute = UserInvitation
-//            
-//        }
+        struct PostUserInvitationRequest: RequestType {
+            typealias Response = SingleContainer<UserInvitation>
+            let method: HTTPMethod = .post
+            let path = "/userInvitations"
+            let invitation: UserInvitation
+            var payload: RequestPayload<UserInvitation> {
+                return .some(id: nil, type: "userInvitations", attributes: invitation)
+            }
+        }
+        let request = PostUserInvitationRequest(
+            invitation: UserInvitation(firstName: "John",
+                                       lastName: "Appleseed",
+                                       email: "john-appleseed@mac.com",
+                                       roles: ["DEVELOPER"],
+                                       allAppsVisible: true)
+        )
+        session.data = loadFixture(postUserInvitations)
+        session.response = makeResponse(to: "/userInvitations", statusCode: 201)
+        client.send(request) { result in
+            switch result {
+            case .success(let createdInvitation):
+                XCTAssertEqual(createdInvitation.data.attributes?.firstName, "John")
+            case .failure(_):
+                XCTFail("Request should be success")
+            }
+        }
     }
     
     func testDelete() {

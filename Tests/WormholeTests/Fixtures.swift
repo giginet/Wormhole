@@ -81,6 +81,26 @@ let usersResponse = """
 }
 """
 
+let postUserInvitations = """
+{
+"data": {
+"type": "userInvitations",
+"id": "24e811a2-2ad0-46e4-b632-61fec324ebed",
+"attributes": {
+"firstName": "John",
+"lastName": "Appleseed",
+"email": "john-appleseed@mac.com",
+"roles": ["DEVELOPER"],
+"allAppsVisible": true,
+"expirationDate": "2018-06-10T13:15.00"
+},
+"links": {
+"self": "../v1/userInvitations/24e811a2-2ad0-46e4-b632-61fec324ebed"
+}
+}
+}
+"""
+
 func loadFixture(_ raw: String) -> Data {
     return raw.data(using: .utf8)!
 }
