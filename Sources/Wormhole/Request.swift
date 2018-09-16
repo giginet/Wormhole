@@ -17,3 +17,9 @@ public protocol RequestType {
     var path: String { get }
     var queryItems: [URLQueryItem] { get }
 }
+
+public extension RequestType {
+    var queryItems: [URLQueryItem] {
+        return []
+    }
+}

@@ -1,8 +1,9 @@
 import Foundation
 import XCTest
 import Wormhole
+import Result
 
-struct TestingRequestClient: RequestClientType {
+struct TestingSession: SessionType {
     init() { }
     
     var data: Data? = nil
@@ -15,14 +16,15 @@ struct TestingRequestClient: RequestClientType {
 }
 
 final class ClientTests: XCTestCase {
-    var requestClient = TestingRequestClient()
+    var session: TestingSession!
     var client: Client {
         let data = loadFixture(privateKey)
         return try! Client(p8Data: data,
                            issuerID: UUID(),
                            keyID: "999999",
-                           requestClient: requestClient)
+                           session: session)
     }
+    
     func makeResponse(to path: String, statusCode: Int) -> HTTPURLResponse {
         let baseURL = URL(string: "https://api.appstoreconnect.apple.com/v1")!
         return HTTPURLResponse(url: baseURL.appendingPathComponent(path),
@@ -31,10 +33,23 @@ final class ClientTests: XCTestCase {
                                headerFields: nil)!
     }
     
+    override func setUp() {
+        session = TestingSession()
+        
+        super.setUp()
+    }
+    
     func testGet() {
-        requestClient.data = loadFixture(userResponse)
-        requestClient.response = makeResponse(to: "/users", statusCode: 200)
-        client.get(from: "/users") { (result: SingleResult<User>) in
+        session.data = loadFixture(userResponse)
+        session.response = makeResponse(to: "/users", statusCode: 200)
+        struct UsersRequest: RequestType {
+            typealias Request = EmptyPayload
+            typealias Response = SingleContainer<User>
+            let method: HTTPMethod = .get
+            let path = "/users"
+        }
+        
+        client.send(UsersRequest()) { (result: Result<SingleContainer<User>, ClientError>) in
             switch result {
             case .success(let container):
                 let user = container.data
