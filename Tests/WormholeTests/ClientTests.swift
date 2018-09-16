@@ -43,7 +43,7 @@ final class ClientTests: XCTestCase {
         session.data = loadFixture(userResponse)
         session.response = makeResponse(to: "/users", statusCode: 200)
         struct UsersRequest: RequestType {
-            typealias Request = EmptyPayload
+            typealias Payload = VoidPayload
             typealias Response = SingleContainer<User>
             let method: HTTPMethod = .get
             let path = "/users"
@@ -54,6 +54,29 @@ final class ClientTests: XCTestCase {
             case .success(let container):
                 let user = container.data
                 XCTAssertEqual(user.attributes?.firstName, "John")
+            case .failure(_):
+                XCTFail("Request should be success")
+            }
+        }
+    }
+    
+    func testDelete() {
+        let uuid = UUID()
+        session.response = makeResponse(to: "/users/\(uuid.uuidString)", statusCode: 204)
+        struct DeleteUserRequest: RequestType {
+            typealias Payload = VoidPayload
+            typealias Response = VoidContainer
+            let id: UUID
+            let method: HTTPMethod = .delete
+            var path: String {
+                return "/users/\(id.uuidString)"
+            }
+        }
+        
+        client.send(DeleteUserRequest(id: uuid)) { result in
+            switch result {
+            case .success(_):
+                break
             case .failure(_):
                 XCTFail("Request should be success")
             }

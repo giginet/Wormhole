@@ -97,7 +97,11 @@ public struct Client {
                     result = .init(error: .decodeError(error))
                 }
             } else {
-                result = .init(error: .unknown)
+                if let container = Request.Response(from: data) {
+                    result = .init(value: container)
+                } else {
+                    result = .init(error: .unknown)
+                }
             }
             completion(result)
         }

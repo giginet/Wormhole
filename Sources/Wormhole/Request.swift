@@ -1,7 +1,7 @@
 import Foundation
 
 public protocol RequestPayloadType: Encodable { }
-public struct EmptyPayload: RequestPayloadType { }
+public struct VoidPayload: RequestPayloadType { }
 
 public enum HTTPMethod: String {
     case get
@@ -11,7 +11,7 @@ public enum HTTPMethod: String {
 }
 
 public protocol RequestType {
-    associatedtype Request: RequestPayloadType
+    associatedtype Payload: RequestPayloadType
     associatedtype Response: EntityContainerType
     var method: HTTPMethod { get }
     var path: String { get }

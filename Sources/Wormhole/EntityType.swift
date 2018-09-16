@@ -10,6 +10,13 @@ public struct Entity<Attribute: AttributeType>: Decodable {
 
 public protocol EntityContainerType: Decodable {
     associatedtype Attribute: AttributeType
+    init?(from data: Data?)
+}
+
+public extension EntityContainerType {
+    public init?(from data: Data?) {
+        return nil
+    }
 }
 
 private enum EntityCodingKeys: String, CodingKey {
@@ -34,4 +41,13 @@ public struct CollectionContainer<Attribute: AttributeType>: Decodable, EntityCo
         var nested = try container.nestedUnkeyedContainer(forKey: .data)
         data = try nested.decode([Entity<Attribute>].self)
     }
+}
+
+public struct VoidContainer: Decodable, EntityContainerType {
+    public struct VoidAttribute: AttributeType { }
+    public typealias Attribute = VoidAttribute
+    
+    init(_ decoder: Decoder) { }
+    
+    public init?(from data: Data?) { }
 }
