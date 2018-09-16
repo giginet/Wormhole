@@ -36,11 +36,12 @@ public enum HTTPMethod: String {
 }
 
 public protocol RequestType {
+    associatedtype Payload: AttributeType
     associatedtype Response: EntityContainerType
     var method: HTTPMethod { get }
     var path: String { get }
     var queryItems: [URLQueryItem] { get }
-    var payload: RequestPayload<Response.Attribute> { get }
+    var payload: RequestPayload<Payload> { get }
 }
 
 public extension RequestType {
