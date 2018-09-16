@@ -43,10 +43,10 @@ final class ClientTests: XCTestCase {
         session.data = loadFixture(userResponse)
         session.response = makeResponse(to: "/users", statusCode: 200)
         struct UsersRequest: RequestType {
-            typealias Payload = VoidPayload
             typealias Response = SingleContainer<User>
             let method: HTTPMethod = .get
             let path = "/users"
+            let payload: RequestPayload<User> = .none
         }
         
         client.send(UsersRequest()) { (result: Result<SingleContainer<User>, ClientError>) in
@@ -68,24 +68,24 @@ final class ClientTests: XCTestCase {
             let roles: [String]
             let allAppsVisible: Bool
         }
-        struct UserInvitationRequestPayload: RequestPayloadType {
-            var type: String
-            typealias Attribute = UserInvitation
-            
-        }
+//        struct UserInvitationRequestPayload: RequestPayloadType {
+//            var type: String
+//            typealias Attribute = UserInvitation
+//            
+//        }
     }
     
     func testDelete() {
         let uuid = UUID()
         session.response = makeResponse(to: "/users/\(uuid.uuidString)", statusCode: 204)
         struct DeleteUserRequest: RequestType {
-            typealias Payload = VoidPayload
             typealias Response = VoidContainer
             let id: UUID
             let method: HTTPMethod = .delete
             var path: String {
                 return "/users/\(id.uuidString)"
             }
+            let payload: RequestPayload<VoidAttribute> = .none
         }
         
         client.send(DeleteUserRequest(id: uuid)) { result in

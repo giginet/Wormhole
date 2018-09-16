@@ -50,9 +50,11 @@ public struct Client {
             "Authorization": "Bearer \(token)"
         ]
         urlRequest.httpMethod = request.method.rawValue.uppercased()
-        if let payload = request.payload {
+        switch request.payload {
+        case .none: break
+        case .some(_, _, _):
             let encoder = JSONEncoder()
-            urlRequest.httpBody = try? encoder.encode(payload)
+//            urlRequest.httpBody = try? encoder.encode(payload)
         }
         return urlRequest
     }

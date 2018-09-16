@@ -1,10 +1,8 @@
 import Foundation
 
-public protocol RequestPayloadType: Encodable {
-    associatedtype Attribute: AttributeType
-    var id: UUID? { get }
-    var type: String? { get }
-    var attributes: Attribute { get }
+public enum RequestPayload<Attribute: AttributeType> {
+    case none
+    case some(id: UUID?, type: String, attributes: Attribute)
 }
 
 private enum PayloadCodingKey: String, CodingKey {
@@ -13,26 +11,21 @@ private enum PayloadCodingKey: String, CodingKey {
     case attributes
 }
 
-extension RequestPayloadType {
+extension RequestPayload {
     func encode(to encoder: Encoder) throws {
-        var container = encoder.container(keyedBy: PayloadCodingKey.self)
-        if let id = self.id {
-            try container.encode(id, forKey: .id)
-        }
-        if let type = self.type {
+        switch self {
+        case .none:
+            break
+        case let .some(uuid, type, attributes):
+            var container = encoder.container(keyedBy: PayloadCodingKey.self)
+            if let id = uuid {
+                try container.encode(id, forKey: .id)
+            }
             try container.encode(type, forKey: .type)
+            var attributeContainer = container.nestedUnkeyedContainer(forKey: .attributes)
+            try attributeContainer.encode(attributes)
         }
-        var attributeContainer = container.nestedUnkeyedContainer(forKey: .attributes)
-        try attributeContainer.encode(attributes)
     }
-}
-
-public struct VoidPayload: RequestPayloadType {
-    public typealias Attribute = VoidAttribute
-    public let attributes = VoidAttribute()
-    public let id: UUID? = nil
-    public let type: String? = nil
-    public func encode(to encoder: Encoder) throws { }
 }
 
 public enum HTTPMethod: String {
@@ -43,22 +36,15 @@ public enum HTTPMethod: String {
 }
 
 public protocol RequestType {
-    associatedtype Payload: RequestPayloadType
     associatedtype Response: EntityContainerType
     var method: HTTPMethod { get }
     var path: String { get }
     var queryItems: [URLQueryItem] { get }
-    var payload: Payload? { get }
+    var payload: RequestPayload<Response.Attribute> { get }
 }
 
 public extension RequestType {
     var queryItems: [URLQueryItem] {
         return []
-    }
-}
-
-public extension RequestType where Payload == VoidPayload {
-    var payload: Payload? {
-        return nil
     }
 }
