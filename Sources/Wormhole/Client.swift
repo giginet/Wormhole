@@ -66,6 +66,16 @@ public struct Client {
         self.token = token
     }
     
+    public init(p8Data: Data,
+                issuerID: UUID,
+                keyID: String,
+                requestClient: RequestClientType = URLSessionClient()) throws {
+        let encoder = try JWTEncoder(data: p8Data)
+        let token = try encoder.encode(issuerID: issuerID, keyID: keyID)
+        self.requestClient = requestClient
+        self.token = token
+    }
+    
     public func get<EntityContainer: EntityContainerType>(from path: String,
                                                           queryItems: [URLQueryItem] = [],
                                                           completion: @escaping Completion<EntityContainer>) {
@@ -116,6 +126,6 @@ public struct Client {
                 result = .init(error: .unknown)
             }
             completion(result)
-            }
+        }
     }
 }

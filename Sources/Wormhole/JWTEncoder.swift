@@ -18,6 +18,13 @@ struct JWTEncoder {
         self.init(privateKey: privateKey)
     }
     
+    init(data: Data) throws {
+        guard let privateKey = String(data: data, encoding: .utf8) else {
+            throw Error.decodeError
+        }
+        self.init(privateKey: privateKey)
+    }
+    
     init(privateKey: String) {
         self.privateKey = privateKey
     }

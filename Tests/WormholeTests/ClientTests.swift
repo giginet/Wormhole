@@ -17,9 +17,8 @@ struct TestingRequestClient: RequestClientType {
 final class ClientTests: XCTestCase {
     var requestClient = TestingRequestClient()
     var client: Client {
-        let bundle = Bundle(for: ClientTests.self)
-        let url = URL(fileURLWithPath: bundle.path(forResource: "private", ofType: "p8")!)
-        return try! Client(p8Path: url,
+        let data = loadFixture(privateKey)
+        return try! Client(p8Data: data,
                            issuerID: UUID(),
                            keyID: "999999",
                            requestClient: requestClient)
@@ -33,7 +32,7 @@ final class ClientTests: XCTestCase {
     }
     
     func testGet() {
-        requestClient.data = loadJSON(from: "user")
+        requestClient.data = loadFixture(userResponse)
         requestClient.response = makeResponse(to: "/users", statusCode: 200)
         client.get(from: "/users") { (result: SingleResult<User>) in
             switch result {

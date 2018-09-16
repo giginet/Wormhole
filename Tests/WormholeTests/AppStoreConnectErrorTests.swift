@@ -4,7 +4,7 @@ import XCTest
 
 final class AppStoreConnectErrorTests: XCTestCase {
     func testDecodeError() {
-        let jsonData = loadJSON(from: "errors")
+        let jsonData = loadFixture(errorResponse)
         let decoder = JSONDecoder()
         let container = try! decoder.decode(ErrorsContainer.self, from: jsonData)
         XCTAssertEqual(container.errors.count, 1)
@@ -19,7 +19,7 @@ final class AppStoreConnectErrorTests: XCTestCase {
     }
     
     func testDescription() {
-        let jsonData = loadJSON(from: "errors")
+        let jsonData = loadFixture(errorResponse)
         let decoder = JSONDecoder()
         let container = try! decoder.decode(ErrorsContainer.self, from: jsonData)
         let error = container.errors.first!

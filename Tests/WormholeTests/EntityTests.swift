@@ -4,7 +4,7 @@ import XCTest
 
 final class EntityTests: XCTestCase {
     func testDecodeSingleObject() {
-        let jsonData = loadJSON(from: "user")
+        let jsonData = loadFixture(userResponse)
         let decoder = JSONDecoder()
         let container = try? decoder.decode(SingleContainer<User>.self, from: jsonData)
         XCTAssertNotNil(container?.data.id)
@@ -12,7 +12,7 @@ final class EntityTests: XCTestCase {
     }
     
     func testDecodeMultipleObjects() {
-        let jsonData = loadJSON(from: "users")
+        let jsonData = loadFixture(usersResponse)
         let decoder = JSONDecoder()
         let container = try? decoder.decode(CollectionContainer<User>.self, from: jsonData)
         XCTAssertEqual(container?.data.count, 2)
