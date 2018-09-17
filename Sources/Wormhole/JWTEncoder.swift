@@ -64,7 +64,7 @@ struct JWTEncoder {
         }
         let uint8 = UnsafeMutablePointer<UInt8>.allocate(capacity: result.0)
         memcpy(uint8, result.1, result.0)
-        result.1?.deallocate()
+        defer { result.1?.deallocate() }
         return uint8
     }
 }
