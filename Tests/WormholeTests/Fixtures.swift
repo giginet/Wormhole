@@ -36,7 +36,8 @@ let userResponse = """
 "firstName": "John",
 "lastName": "Appleseed",
 "email": "john-appleseed@mac.com",
-"inviteType": "EMAIL"
+"inviteType": "EMAIL",
+"roles": ["DEVELOPER"]
 },
 "relationships": {},
 "links": {
@@ -56,7 +57,8 @@ let usersResponse = """
 "firstName": "John",
 "lastName": "Appleseed",
 "email": "john-appleseed@mac.com",
-"inviteType": "EMAIL"
+"inviteType": "EMAIL",
+"roles": ["DEVELOPER"]
 },
 "relationships": {},
 "links": {
@@ -70,7 +72,8 @@ let usersResponse = """
 "firstName": "John",
 "lastName": "Appleseed",
 "email": "john-appleseed@mac.com",
-"inviteType": "EMAIL"
+"inviteType": "EMAIL",
+"roles": ["DEVELOPER"]
 },
 "relationships": {},
 "links": {

@@ -65,7 +65,7 @@ final class ClientTests: XCTestCase {
             let firstName: String
             let lastName: String
             let email: String
-            let roles: [String]
+            let roles: [Role]
             let allAppsVisible: Bool
         }
         struct PostUserInvitationRequest: RequestType {
@@ -81,7 +81,7 @@ final class ClientTests: XCTestCase {
             invitation: UserInvitation(firstName: "John",
                                        lastName: "Appleseed",
                                        email: "john-appleseed@mac.com",
-                                       roles: ["DEVELOPER"],
+                                       roles: [.developer],
                                        allAppsVisible: true)
         )
         session.data = loadFixture(postUserInvitations)
@@ -101,20 +101,21 @@ final class ClientTests: XCTestCase {
             typealias Response = SingleContainer<User>
             let method: HTTPMethod = .patch
             let path = "/users"
-            let roles: [String]
+            let roles: [Role]
             var payload: RequestPayload {
                 return .init(id: UUID(uuidString: "24e811a2-2ad0-46e4-b632-61fec324ebed")!,
                              type: "users",
                              attributes: roles)
             }
         }
-        let request = RoleModificationRequest(roles: ["DEVELOPER", "MARKETING"])
+        let request = RoleModificationRequest(roles: [.developer, .marketing])
         session.data = loadFixture(userResponse)
         session.response = makeResponse(to: "/users", statusCode: 200)
         client.send(request) { result in
             switch result {
             case .success(let createdInvitation):
                 XCTAssertEqual(createdInvitation.data.attributes?.firstName, "John")
+                XCTAssertEqual(createdInvitation.data.attributes?.roles, [.developer])
             case .failure(_):
                 XCTFail("Request should be success")
             }
