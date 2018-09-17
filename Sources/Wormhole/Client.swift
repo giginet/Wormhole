@@ -40,12 +40,12 @@ public struct Client {
     
     private func buildURLRequest<Request: RequestType>(from request: Request) throws -> URLRequest {
         var urlComponent = URLComponents()
-        urlComponent.path = request.path
         urlComponent.queryItems = request.queryItems
         guard let url = urlComponent.url(relativeTo: baseURL) else {
             throw ClientError.invalidRequest
         }
-        var urlRequest = URLRequest(url: url)
+        let fullURL = url.appendingPathComponent(request.path)
+        var urlRequest = URLRequest(url: fullURL)
         urlRequest.allHTTPHeaderFields = [
             "Authorization": "Bearer \(token)"
         ]

@@ -9,8 +9,10 @@ struct TestingSession: SessionType {
     var data: Data? = nil
     var response: URLResponse? = nil
     var error: Error? = nil
+    var requestBlock: ((URLRequest) -> Void)?
     
     func request(with request: URLRequest, completion: @escaping (Data?, URLResponse?, Error?) -> Void) {
+        requestBlock?(request)
         completion(data, response, error)
     }
 }
@@ -49,6 +51,11 @@ final class ClientTests: XCTestCase {
             let payload: RequestPayload = .void
         }
         
+        session.requestBlock = { request in
+            XCTAssertEqual(request.httpMethod, "GET")
+            XCTAssertEqual(request.url, URL(string: "https://api.appstoreconnect.apple.com/v1/users")!)
+            XCTAssertNil(request.httpBody)
+        }
         client.send(UsersRequest()) { (result: Result<SingleContainer<User>, ClientError>) in
             switch result {
             case .success(let container):
@@ -86,6 +93,15 @@ final class ClientTests: XCTestCase {
         )
         session.data = loadFixture(postUserInvitations)
         session.response = makeResponse(to: "/userInvitations", statusCode: 201)
+        session.requestBlock = { request in
+            XCTAssertEqual(request.httpMethod, "POST")
+            XCTAssertEqual(request.url, URL(string: "https://api.appstoreconnect.apple.com/v1/userInvitations")!)
+            XCTAssertNotNil(request.httpBody)
+            let body = try! JSONSerialization.jsonObject(with: request.httpBody!, options: []) as! [String: Any]
+            XCTAssertEqual(body.count, 2)
+            XCTAssertEqual(body["type"] as! String, "userInvitations")
+            XCTAssertNotNil(body["attributes"])
+        }
         client.send(request) { result in
             switch result {
             case .success(let createdInvitation):
@@ -97,20 +113,34 @@ final class ClientTests: XCTestCase {
     }
     
     func testPatch() {
+        let uuid = UUID()
         struct RoleModificationRequest: RequestType {
             typealias Response = SingleContainer<User>
             let method: HTTPMethod = .patch
-            let path = "/users"
+            var path: String {
+                return "/users/\(id.uuidString.lowercased())"
+            }
+            let id: UUID
             let roles: [Role]
             var payload: RequestPayload {
-                return .init(id: UUID(uuidString: "24e811a2-2ad0-46e4-b632-61fec324ebed")!,
+                return .init(id: id,
                              type: "users",
                              attributes: roles)
             }
         }
-        let request = RoleModificationRequest(roles: [.developer, .marketing])
+        let request = RoleModificationRequest(id: uuid, roles: [.developer, .marketing])
         session.data = loadFixture(userResponse)
         session.response = makeResponse(to: "/users", statusCode: 200)
+        session.requestBlock = { request in
+            XCTAssertEqual(request.httpMethod, "PATCH")
+            XCTAssertEqual(request.url, URL(string: "https://api.appstoreconnect.apple.com/v1/users/\(uuid.uuidString.lowercased())")!)
+            XCTAssertNotNil(request.httpBody)
+            let body = try! JSONSerialization.jsonObject(with: request.httpBody!, options: []) as! [String: Any]
+            XCTAssertEqual(body.count, 3)
+            XCTAssertEqual(body["type"] as! String, "users")
+            XCTAssertEqual(body["id"] as! String, uuid.uuidString)
+            XCTAssertNotNil(body["attributes"])
+        }
         client.send(request) { result in
             switch result {
             case .success(let createdInvitation):
@@ -130,11 +160,16 @@ final class ClientTests: XCTestCase {
             let id: UUID
             let method: HTTPMethod = .delete
             var path: String {
-                return "/users/\(id.uuidString)"
+                return "/users/\(id.uuidString.lowercased())"
             }
             let payload: RequestPayload = .void
         }
         
+        session.requestBlock = { request in
+            XCTAssertEqual(request.httpMethod, "DELETE")
+            XCTAssertEqual(request.url, URL(string: "https://api.appstoreconnect.apple.com/v1/users/\(uuid.uuidString.lowercased())")!)
+            XCTAssertNil(request.httpBody)
+        }
         client.send(DeleteUserRequest(id: uuid)) { result in
             switch result {
             case .success(_):

@@ -62,12 +62,12 @@ public protocol RequestType {
     associatedtype Response: EntityContainerType
     var method: HTTPMethod { get }
     var path: String { get }
-    var queryItems: [URLQueryItem] { get }
+    var queryItems: [URLQueryItem]? { get }
     var payload: RequestPayload { get }
 }
 
 public extension RequestType {
-    var queryItems: [URLQueryItem] {
-        return []
+    var queryItems: [URLQueryItem]? {
+        return nil
     }
 }
