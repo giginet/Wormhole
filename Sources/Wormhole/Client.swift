@@ -50,11 +50,7 @@ public struct Client {
             "Authorization": "Bearer \(token)"
         ]
         urlRequest.httpMethod = request.method.rawValue.uppercased()
-        switch request.payload {
-        case .none: break
-        case .some(_, _, let attachment):
-            urlRequest.httpBody = attachment.httpBody
-        }
+        urlRequest.httpBody = request.payload.httpBody
         return urlRequest
     }
     

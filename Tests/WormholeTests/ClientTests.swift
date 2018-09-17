@@ -46,7 +46,7 @@ final class ClientTests: XCTestCase {
             typealias Response = SingleContainer<User>
             let method: HTTPMethod = .get
             let path = "/users"
-            let payload: RequestPayload<User> = .none
+            let payload: RequestPayload = .void
         }
         
         client.send(UsersRequest()) { (result: Result<SingleContainer<User>, ClientError>) in
@@ -73,8 +73,8 @@ final class ClientTests: XCTestCase {
             let method: HTTPMethod = .post
             let path = "/userInvitations"
             let invitation: UserInvitation
-            var payload: RequestPayload<UserInvitation> {
-                return .some(id: nil, type: "userInvitations", attributes: invitation)
+            var payload: RequestPayload {
+                return .init(type: "userInvitations", attributes: invitation)
             }
         }
         let request = PostUserInvitationRequest(
@@ -102,8 +102,10 @@ final class ClientTests: XCTestCase {
             let method: HTTPMethod = .patch
             let path = "/users"
             let roles: [String]
-            var payload: RequestPayload<[String]> {
-                return .some(id: UUID(uuidString: "24e811a2-2ad0-46e4-b632-61fec324ebed")!, type: "users", attributes: roles)
+            var payload: RequestPayload {
+                return .init(id: UUID(uuidString: "24e811a2-2ad0-46e4-b632-61fec324ebed")!,
+                             type: "users",
+                             attributes: roles)
             }
         }
         let request = RoleModificationRequest(roles: ["DEVELOPER", "MARKETING"])
@@ -129,7 +131,7 @@ final class ClientTests: XCTestCase {
             var path: String {
                 return "/users/\(id.uuidString)"
             }
-            let payload: RequestPayload<VoidAttribute> = .none
+            let payload: RequestPayload = .void
         }
         
         client.send(DeleteUserRequest(id: uuid)) { result in
