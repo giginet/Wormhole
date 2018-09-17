@@ -52,9 +52,8 @@ public struct Client {
         urlRequest.httpMethod = request.method.rawValue.uppercased()
         switch request.payload {
         case .none: break
-        case .some(_, _, _):
-            let encoder = JSONEncoder()
-//            urlRequest.httpBody = try? encoder.encode(payload)
+        case .some(_, _, let attachment):
+            urlRequest.httpBody = attachment.httpBody
         }
         return urlRequest
     }

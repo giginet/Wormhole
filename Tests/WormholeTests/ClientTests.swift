@@ -61,7 +61,7 @@ final class ClientTests: XCTestCase {
     }
     
     func testPost() {
-        struct UserInvitation: AttributeType {
+        struct UserInvitation: AttributeType, PayloadAttachable {
             let firstName: String
             let lastName: String
             let email: String
@@ -97,19 +97,16 @@ final class ClientTests: XCTestCase {
     }
     
     func testPatch() {
-        struct Role: AttributeType {
-            let roles: [String]
-        }
         struct RoleModificationRequest: RequestType {
             typealias Response = SingleContainer<User>
             let method: HTTPMethod = .patch
             let path = "/users"
-            let role: Role
-            var payload: RequestPayload<Role> {
-                return .some(id: UUID(uuidString: "24e811a2-2ad0-46e4-b632-61fec324ebed")!, type: "users", attributes: role)
+            let roles: [String]
+            var payload: RequestPayload<[String]> {
+                return .some(id: UUID(uuidString: "24e811a2-2ad0-46e4-b632-61fec324ebed")!, type: "users", attributes: roles)
             }
         }
-        let request = RoleModificationRequest(role: Role(roles: ["DEVELOPER", "MARKETING"]))
+        let request = RoleModificationRequest(roles: ["DEVELOPER", "MARKETING"])
         session.data = loadFixture(userResponse)
         session.response = makeResponse(to: "/users", statusCode: 200)
         client.send(request) { result in

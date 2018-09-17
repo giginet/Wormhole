@@ -1,7 +1,7 @@
 import Foundation
 
 public protocol AttributeType: Codable { }
-public struct VoidAttribute: AttributeType { }
+public struct VoidAttribute: AttributeType, PayloadAttachable { }
 
 public struct Entity<Attribute: AttributeType>: Decodable {
     public let id: UUID?

@@ -1,8 +1,19 @@
 import Foundation
 
-public enum RequestPayload<Attribute: AttributeType> {
+public protocol PayloadAttachable {
+    var httpBody: Data? { get }
+}
+extension Array: PayloadAttachable where Element: Encodable { }
+extension Dictionary: PayloadAttachable where Key: Encodable, Value: Encodable { }
+extension PayloadAttachable where Self: Encodable {
+    public var httpBody: Data? {
+        let encoder = JSONEncoder()
+        return try? encoder.encode(self)
+    }
+}
+public enum RequestPayload<Attachment: PayloadAttachable> {
     case none
-    case some(id: UUID?, type: String, attributes: Attribute)
+    case some(id: UUID?, type: String, attributes: Attachment)
 }
 
 private enum PayloadCodingKey: String, CodingKey {
@@ -23,7 +34,7 @@ extension RequestPayload {
             }
             try container.encode(type, forKey: .type)
             var attributeContainer = container.nestedUnkeyedContainer(forKey: .attributes)
-            try attributeContainer.encode(attributes)
+            try attributeContainer.encode(attributes.httpBody)
         }
     }
 }
@@ -36,7 +47,7 @@ public enum HTTPMethod: String {
 }
 
 public protocol RequestType {
-    associatedtype Payload: AttributeType
+    associatedtype Payload: PayloadAttachable
     associatedtype Response: EntityContainerType
     var method: HTTPMethod { get }
     var path: String { get }
