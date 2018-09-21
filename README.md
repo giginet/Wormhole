@@ -53,7 +53,7 @@ import PackageDescription
 let package = Package(
     name: "MyExecutable",
     dependencies: [
-        .package(url: "https://github.com/giginet/Wormhole.git", .from("0.1.0")),
+        .package(url: "https://github.com/giginet/Wormhole.git", from: "0.1.0"),
     ],
     targets: [
         .target(
