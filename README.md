@@ -40,6 +40,7 @@ $ brew install giginet/libjwt/libjwt
 $ mkdir MyExecutable
 $ cd MyExecutable
 $ swift package init --type executable
+$ swift package tools-version --set 4.2.0
 ```
 
 ### 2. Add the dependency to your `Package.swift`.
